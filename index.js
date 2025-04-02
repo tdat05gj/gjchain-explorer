@@ -3,7 +3,6 @@ const admin = require('firebase-admin');
 const app = express();
 const port = process.env.PORT || 3001;
 
-// Khởi tạo Firebase với biến môi trường
 let serviceAccount;
 if (process.env.FIREBASE_ADMINSDK) {
     try {
