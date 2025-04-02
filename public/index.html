@@ -2,13 +2,72 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>GJChain Explorer</title>
-    <link rel="stylesheet" href="/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GJ Explorer</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #43cea2, #185a9d);
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            text-align: center;
+            color: #fff;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        th {
+            background: rgba(0, 0, 0, 0.2);
+        }
+    </style>
 </head>
 <body>
-    <h1>GJChain Explorer</h1>
-    <button onclick="fetchChain()">Tải Chuỗi</button>
-    <pre id="output"></pre>
-    <script src="/script.js"></script>
+    <div class="container">
+        <h1>GJ Explorer</h1>
+        <table id="chainTable">
+            <thead>
+                <tr>
+                    <th>Index</th>
+                    <th>Hash</th>
+                    <th>Miner</th>
+                    <th>Timestamp</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <script>
+        async function loadChain() {
+            const response = await fetch('/chain');
+            const chain = await response.json();
+            const tbody = document.querySelector('#chainTable tbody');
+            tbody.innerHTML = '';
+            chain.forEach(block => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${block.index}</td><td>${block.hash.slice(0, 10)}...</td><td>${block.miner}</td><td>${block.timestamp}</td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        loadChain();
+    </script>
 </body>
 </html>
